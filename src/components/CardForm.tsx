@@ -38,9 +38,7 @@ const CardForm = ({ setCardDetails, onSubmit }: CardFormProps) => {
     let value = String(e.target.value).replace(/\D/g, ""); // Remove non-numeric characters
     value = value.slice(0, 16); // Limit to 16 digits
 
-    const formattedString: string = value
-      .replace(/(\d{4})/g, "$1 ")
-      .trim(); // Add spaces
+    const formattedString: string = value.replace(/(\d{4})/g, "$1 ").trim(); // Add spaces
 
     setFormData((prev) => ({ ...prev, cardNumber: formattedString }));
     setCardDetails((prev: any) => ({ ...prev, cardNumber: formattedString }));
@@ -94,7 +92,9 @@ const CardForm = ({ setCardDetails, onSubmit }: CardFormProps) => {
     e.preventDefault();
 
     const newErrors = {
-      cardHolder: formData.cardHolder.trim() ? "" : "Cardholder name is required",
+      cardHolder: formData.cardHolder.trim()
+        ? ""
+        : "Cardholder name is required",
       cardNumber:
         formData.cardNumber.replace(/\s/g, "").length === 16
           ? ""
@@ -124,17 +124,19 @@ const CardForm = ({ setCardDetails, onSubmit }: CardFormProps) => {
             Cardholder Name
           </label>
           <div className="p-0.5 rounded-lg focus-within:bg-gradient-to-r from-[hsl(249,99%,64%)] to-[hsl(278,94%,30%)]">
-          <input
-            type="text"
-            id="name"
-            maxLength={30}
-            placeholder="e.g. Jane Appleseed"
-            className={`border ${
-              errors.cardHolder ? "border-primary-error" : "border-light-grayish-violet"
-            } bg-white outline-none p-2 rounded-md w-full`}
-            value={formData.cardHolder}
-            onChange={handleCardholderChange}
-          />
+            <input
+              type="text"
+              id="name"
+              maxLength={30}
+              placeholder="e.g. Jane Appleseed"
+              className={`border ${
+                errors.cardHolder
+                  ? "border-primary-error"
+                  : "border-light-grayish-violet"
+              } bg-white outline-none p-2 rounded-md w-full`}
+              value={formData.cardHolder}
+              onChange={handleCardholderChange}
+            />
           </div>
           {errors.cardHolder && (
             <p className="text-primary-error text-xs">{errors.cardHolder}</p>
@@ -147,17 +149,19 @@ const CardForm = ({ setCardDetails, onSubmit }: CardFormProps) => {
             Card Number
           </label>
           <div className="p-0.5 rounded-lg focus-within:bg-gradient-to-r from-[hsl(249,99%,64%)] to-[hsl(278,94%,30%)]">
-          <input
-            type="text"
-            id="card-number"
-            placeholder="eg. 1234 5678 9123 0000"
-            maxLength={19}
-            className={`border ${
-              errors.cardNumber ? "border-primary-error" : "border-light-grayish-violet"
-            } bg-white outline-none p-2 rounded-md w-full`}
-            value={formData.cardNumber}
-            onChange={handleCardNumberChange}
-          />
+            <input
+              type="text"
+              id="card-number"
+              placeholder="eg. 1234 5678 9123 0000"
+              maxLength={19}
+              className={`border ${
+                errors.cardNumber
+                  ? "border-primary-error"
+                  : "border-light-grayish-violet"
+              } bg-white outline-none p-2 rounded-md w-full`}
+              value={formData.cardNumber}
+              onChange={handleCardNumberChange}
+            />
           </div>
           {errors.cardNumber && (
             <p className="text-primary-error text-xs">{errors.cardNumber}</p>
@@ -175,54 +179,69 @@ const CardForm = ({ setCardDetails, onSubmit }: CardFormProps) => {
             </label>
             <div className="flex gap-2">
               <div className="space-y-2 w-full">
-              <div className="p-0.5 rounded-lg focus-within:bg-gradient-to-r from-[hsl(249,99%,64%)] to-[hsl(278,94%,30%)]">
-                <input
-                  type="text"
-                  id="exp-month"
-                  placeholder="MM"
-                  maxLength={2}
-                  className={`border ${
-                    errors.expiryMonth ? "border-primary-error" : "border-light-grayish-violet"
-                  } bg-white outline-none p-2 rounded-md w-full`}
-                  value={formData.expiryMonth}
-                  onChange={handleExpiryMonthChange}
-                  onBlur={(e) => {
-                    if (e.target.value === "00") {
-                      setFormData((prev) => ({ ...prev, expiryMonth: "" }));
-                      setCardDetails((prev: any) => ({ ...prev, expiryMonth: "" }));
-                    }
-                  }}
-                />
+                <div className="p-0.5 rounded-lg focus-within:bg-gradient-to-r from-[hsl(249,99%,64%)] to-[hsl(278,94%,30%)]">
+                  <input
+                    type="text"
+                    id="exp-month"
+                    placeholder="MM"
+                    maxLength={2}
+                    className={`border ${
+                      errors.expiryMonth
+                        ? "border-primary-error"
+                        : "border-light-grayish-violet"
+                    } bg-white outline-none p-2 rounded-md w-full`}
+                    value={formData.expiryMonth}
+                    onChange={handleExpiryMonthChange}
+                    onBlur={(e) => {
+                      if (e.target.value === "00") {
+                        setFormData((prev) => ({ ...prev, expiryMonth: "" }));
+                        setCardDetails((prev: any) => ({
+                          ...prev,
+                          expiryMonth: "",
+                        }));
+                      }
+                    }}
+                  />
                 </div>
-                {errors.expiryMonth && (
-                  <p className="text-primary-error text-xs">{errors.expiryMonth}</p>
-                )}
+                {/* {errors.expiryMonth || errors.expiryYear && (
+                  <p className="text-primary-error text-xs">{errors.expiryMonth || errors.expiryYear}</p>
+                )} */}
               </div>
               <div className="space-y-2 w-full">
-              <div className="p-0.5 rounded-lg focus-within:bg-gradient-to-r from-[hsl(249,99%,64%)] to-[hsl(278,94%,30%)]">
-                <input
-                  type="text"
-                  id="exp-year"
-                  placeholder="YY"
-                  maxLength={2}
-                  className={`border ${
-                    errors.expiryYear ? "border-primary-error" : "border-light-grayish-violet"
-                  } bg-white outline-none p-2 rounded-md w-full`}
-                  value={formData.expiryYear}
-                  onChange={handleExpiryYearChange}
-                  onBlur={(e) => {
-                    if (e.target.value === "00") {
-                      setFormData((prev) => ({ ...prev, expiryYear: "" }));
-                      setCardDetails((prev: any) => ({ ...prev, expiryYear: "" }));
-                    }
-                  }}
-                />
+                <div className="p-0.5 rounded-lg focus-within:bg-gradient-to-r from-[hsl(249,99%,64%)] to-[hsl(278,94%,30%)]">
+                  <input
+                    type="text"
+                    id="exp-year"
+                    placeholder="YY"
+                    maxLength={2}
+                    className={`border ${
+                      errors.expiryYear
+                        ? "border-primary-error"
+                        : "border-light-grayish-violet"
+                    } bg-white outline-none p-2 rounded-md w-full`}
+                    value={formData.expiryYear}
+                    onChange={handleExpiryYearChange}
+                    onBlur={(e) => {
+                      if (e.target.value === "00") {
+                        setFormData((prev) => ({ ...prev, expiryYear: "" }));
+                        setCardDetails((prev: any) => ({
+                          ...prev,
+                          expiryYear: "",
+                        }));
+                      }
+                    }}
+                  />
                 </div>
-                {errors.expiryYear && (
+                {/* {errors.expiryYear && (
                   <p className="text-primary-error text-xs">{errors.expiryYear}</p>
-                )}
+                )} */}
               </div>
             </div>
+            {(errors.expiryMonth || errors.expiryYear) && (
+              <p className="text-primary-error text-xs">
+                {errors.expiryMonth || errors.expiryYear}
+              </p>
+            )}
           </div>
 
           {/* CVV */}
@@ -231,17 +250,19 @@ const CardForm = ({ setCardDetails, onSubmit }: CardFormProps) => {
               CVC
             </label>
             <div className="p-0.5 rounded-lg focus-within:bg-gradient-to-r from-[hsl(249,99%,64%)] to-[hsl(278,94%,30%)]">
-            <input
-              type="text"
-              id="cvc"
-              placeholder="eg. 123"
-              maxLength={3}
-              className={`border ${
-                errors.cvv ? "border-primary-error" : "border-light-grayish-violet"
-              } bg-white outline-none p-2 rounded-md w-full`}
-              value={formData.cvv}
-              onChange={handleCvvChange}
-            />
+              <input
+                type="text"
+                id="cvc"
+                placeholder="eg. 123"
+                maxLength={3}
+                className={`border ${
+                  errors.cvv
+                    ? "border-primary-error"
+                    : "border-light-grayish-violet"
+                } bg-white outline-none p-2 rounded-md w-full`}
+                value={formData.cvv}
+                onChange={handleCvvChange}
+              />
             </div>
             {errors.cvv && (
               <p className="text-primary-error text-xs">{errors.cvv}</p>
