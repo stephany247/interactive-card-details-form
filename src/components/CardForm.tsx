@@ -2,9 +2,10 @@ import { useState } from "react";
 
 interface CardFormProps {
   setCardDetails: (details: any) => void;
+  onSubmit: () => void;
 }
 
-const CardForm = ({ setCardDetails }: CardFormProps) => {
+const CardForm = ({ setCardDetails, onSubmit }: CardFormProps) => {
   const [errors, setErrors] = useState({
     cardHolder: "",
     cardNumber: "",
@@ -37,14 +38,7 @@ const CardForm = ({ setCardDetails }: CardFormProps) => {
     let value = String(e.target.value).replace(/\D/g, ""); // Remove non-numeric characters
     value = value.slice(0, 16); // Limit to 16 digits
 
-    // Fill in the '0000 0000 0000 0000' template
-    // let formatted: string[] = "0000000000000000".split(""); // Convert to array
-    // for (let i = 0; i < value.length; i++) {
-    //   formatted[i] = value[i]; // Replace 0s with input
-    // }
-
     const formattedString: string = value
-      // .join("")
       .replace(/(\d{4})/g, "$1 ")
       .trim(); // Add spaces
 
@@ -105,8 +99,8 @@ const CardForm = ({ setCardDetails }: CardFormProps) => {
         formData.cardNumber.replace(/\s/g, "").length === 16
           ? ""
           : "Card number must be 16 digits",
-      expiryMonth: formData.expiryMonth ? "" : "Month is required",
-      expiryYear: formData.expiryYear ? "" : "Year is required",
+      expiryMonth: formData.expiryMonth ? "" : "Can't be blank",
+      expiryYear: formData.expiryYear ? "" : "Can't be blank",
       cvv: formData.cvv.length >= 3 ? "" : "CVV must be 3 digits",
     };
 
@@ -118,28 +112,32 @@ const CardForm = ({ setCardDetails }: CardFormProps) => {
     }
 
     console.log("Form submitted successfully!", formData);
-    alert("Card details submitted successfully!");
+    onSubmit();
   };
 
   return (
-    <section className="text-very-dark-violet p-8 mt-20 sm:mt-28 mx-auto md:my-36 lg:my-auto md:mx-auto max-w-sm col-span-3">
+    <section className="text-very-dark-violet p-8 mt-20 sm:mt-28 mx-auto md:my-36 lg:my-auto md:mx-auto max-w-92 col-span-3">
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         {/* Cardholder Name */}
         <div className="flex flex-col gap-2 text-very-dark-violet">
           <label htmlFor="name" className="uppercase text-sm">
             Cardholder Name
           </label>
+          <div className="p-0.5 rounded-lg focus-within:bg-gradient-to-r from-[hsl(249,99%,64%)] to-[hsl(278,94%,30%)]">
           <input
             type="text"
             id="name"
             maxLength={30}
             placeholder="e.g. Jane Appleseed"
-            className="border border-light-grayish-violet focus:border-primary-border outline-none p-2 rounded-md w-full"
+            className={`border ${
+              errors.cardHolder ? "border-primary-error" : "border-light-grayish-violet"
+            } bg-white outline-none p-2 rounded-md w-full`}
             value={formData.cardHolder}
             onChange={handleCardholderChange}
           />
+          </div>
           {errors.cardHolder && (
-            <p className="text-red-500 text-sm">{errors.cardHolder}</p>
+            <p className="text-primary-error text-xs">{errors.cardHolder}</p>
           )}
         </div>
 
@@ -148,17 +146,21 @@ const CardForm = ({ setCardDetails }: CardFormProps) => {
           <label htmlFor="card-number" className="uppercase text-sm">
             Card Number
           </label>
+          <div className="p-0.5 rounded-lg focus-within:bg-gradient-to-r from-[hsl(249,99%,64%)] to-[hsl(278,94%,30%)]">
           <input
             type="text"
             id="card-number"
             placeholder="eg. 1234 5678 9123 0000"
             maxLength={19}
-            className="border border-light-grayish-violet focus:border-primary-border p-2 rounded-md w-full"
+            className={`border ${
+              errors.cardNumber ? "border-primary-error" : "border-light-grayish-violet"
+            } bg-white outline-none p-2 rounded-md w-full`}
             value={formData.cardNumber}
             onChange={handleCardNumberChange}
           />
+          </div>
           {errors.cardNumber && (
-            <p className="text-red-500 text-sm">{errors.cardNumber}</p>
+            <p className="text-primary-error text-xs">{errors.cardNumber}</p>
           )}
         </div>
 
@@ -173,12 +175,15 @@ const CardForm = ({ setCardDetails }: CardFormProps) => {
             </label>
             <div className="flex gap-2">
               <div className="space-y-2 w-full">
+              <div className="p-0.5 rounded-lg focus-within:bg-gradient-to-r from-[hsl(249,99%,64%)] to-[hsl(278,94%,30%)]">
                 <input
                   type="text"
                   id="exp-month"
                   placeholder="MM"
                   maxLength={2}
-                  className="border border-light-grayish-violet focus:border-primary-border p-2 rounded-md w-full"
+                  className={`border ${
+                    errors.expiryMonth ? "border-primary-error" : "border-light-grayish-violet"
+                  } bg-white outline-none p-2 rounded-md w-full`}
                   value={formData.expiryMonth}
                   onChange={handleExpiryMonthChange}
                   onBlur={(e) => {
@@ -188,17 +193,21 @@ const CardForm = ({ setCardDetails }: CardFormProps) => {
                     }
                   }}
                 />
+                </div>
                 {errors.expiryMonth && (
-                  <p className="text-red-500 text-sm">{errors.expiryMonth}</p>
+                  <p className="text-primary-error text-xs">{errors.expiryMonth}</p>
                 )}
               </div>
               <div className="space-y-2 w-full">
+              <div className="p-0.5 rounded-lg focus-within:bg-gradient-to-r from-[hsl(249,99%,64%)] to-[hsl(278,94%,30%)]">
                 <input
                   type="text"
                   id="exp-year"
                   placeholder="YY"
                   maxLength={2}
-                  className="border border-light-grayish-violet focus:border-primary-border p-2 rounded-md w-full"
+                  className={`border ${
+                    errors.expiryYear ? "border-primary-error" : "border-light-grayish-violet"
+                  } bg-white outline-none p-2 rounded-md w-full`}
                   value={formData.expiryYear}
                   onChange={handleExpiryYearChange}
                   onBlur={(e) => {
@@ -208,8 +217,9 @@ const CardForm = ({ setCardDetails }: CardFormProps) => {
                     }
                   }}
                 />
+                </div>
                 {errors.expiryYear && (
-                  <p className="text-red-500 text-sm">{errors.expiryYear}</p>
+                  <p className="text-primary-error text-xs">{errors.expiryYear}</p>
                 )}
               </div>
             </div>
@@ -220,17 +230,21 @@ const CardForm = ({ setCardDetails }: CardFormProps) => {
             <label htmlFor="cvc" className="uppercase text-sm">
               CVC
             </label>
+            <div className="p-0.5 rounded-lg focus-within:bg-gradient-to-r from-[hsl(249,99%,64%)] to-[hsl(278,94%,30%)]">
             <input
               type="text"
               id="cvc"
               placeholder="eg. 123"
               maxLength={3}
-              className="border border-light-grayish-violet focus:border-primary-border p-2 rounded-md w-full"
+              className={`border ${
+                errors.cvv ? "border-primary-error" : "border-light-grayish-violet"
+              } bg-white outline-none p-2 rounded-md w-full`}
               value={formData.cvv}
               onChange={handleCvvChange}
             />
+            </div>
             {errors.cvv && (
-              <p className="text-red-500 text-sm">{errors.cvv}</p>
+              <p className="text-primary-error text-xs">{errors.cvv}</p>
             )}
           </div>
         </div>
@@ -238,7 +252,7 @@ const CardForm = ({ setCardDetails }: CardFormProps) => {
         {/* Submit Button */}
         <button
           type="submit"
-          className="bg-very-dark-violet text-white p-3 rounded-lg mt-2"
+          className="bg-very-dark-violet hover:bg-very-dark-violet/85 text-white p-3 rounded-lg mt-2"
         >
           Confirm
         </button>

@@ -3,6 +3,8 @@ import "./App.css";
 import CardBack from "./components/CardBack";
 import CardFront from "./components/CardFront";
 import CardForm from "./components/CardForm";
+import complete from "./assets/images/icon-complete.svg";
+import Complete from "./components/Complete";
 
 function App() {
   const [cardDetails, setCardDetails] = useState({
@@ -12,6 +14,16 @@ function App() {
     expiryYear: "00",
     cvv: "000"
   });
+
+  const [isComplete, setIsComplete] = useState(false); // Toggle between form and complete section
+
+  const handleSubmit = () => {
+    setIsComplete(true);
+  };
+
+  const handleReset = () => {
+    setIsComplete(false);
+  };
 
 
   return (
@@ -27,7 +39,11 @@ function App() {
           />
         </div>
       </section>
-      <CardForm setCardDetails={setCardDetails} />
+      {isComplete ? (
+        <Complete complete={complete} onReset={handleReset} />
+      ) : (
+        <CardForm setCardDetails={setCardDetails} onSubmit={handleSubmit} />
+      )}
     </div>
   );
 }
