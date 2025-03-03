@@ -15,8 +15,8 @@ function App() {
 
 
   return (
-    <>
-      <section className="relative bg-[url(./assets/images/bg-main-mobile.png)] md:bg-[url(./assets/images/bg-main-desktop.png)] bg-cover bg-center h-60 w-full pt-16 px-4 flex items-start justify-center mx-auto">
+    <div className="lg:grid lg:grid-cols-4 min-h-screen">
+      <section className="relative bg-[url(./assets/images/bg-main-mobile.png)] md:bg-[url(./assets/images/bg-main-desktop.png)] bg-cover bg-center h-60 w-full lg:h-full pt-16 px-4 flex items-start justify-center mx-auto">
         <div className="relative w-full max-w-md h-full">
           <CardBack cvv={cardDetails.cvv} />
           <CardFront
@@ -27,8 +27,8 @@ function App() {
           />
         </div>
       </section>
-      <CardForm cardDetails={cardDetails} setCardDetails={setCardDetails} />
-    </>
+      <CardForm setCardDetails={setCardDetails} />
+    </div>
   );
 }
 

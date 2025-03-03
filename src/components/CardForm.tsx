@@ -66,13 +66,12 @@ const CardForm = ({ setCardDetails }: CardFormProps) => {
 
     setErrors((prev) => ({
       ...prev,
-      expiryMonth: value ? "" : "Month is required",
+      expiryMonth: value ? "" : "Can't be blank",
     }));
   };
 
   const handleExpiryYearChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value.replace(/\D/g, ""); // Allow only numbers
-    // if (value.length === 1) value = "0" + value; // Add leading zero if needed
     if (parseInt(value, 10) > 99) value = "00"; // Prevent invalid years
 
     setFormData((prev) => ({ ...prev, expiryYear: value }));
@@ -80,7 +79,7 @@ const CardForm = ({ setCardDetails }: CardFormProps) => {
 
     setErrors((prev) => ({
       ...prev,
-      expiryYear: value ? "" : "Year is required",
+      expiryYear: value ? "" : "Can't be blank",
     }));
   };
 
@@ -123,7 +122,7 @@ const CardForm = ({ setCardDetails }: CardFormProps) => {
   };
 
   return (
-    <section className="text-very-dark-violet mt-28 sm:mt-20 mx-6 mb-12">
+    <section className="text-very-dark-violet p-8 mt-20 sm:mt-28 mx-auto md:my-36 lg:my-auto md:mx-auto max-w-sm col-span-3">
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         {/* Cardholder Name */}
         <div className="flex flex-col gap-2 text-very-dark-violet">
